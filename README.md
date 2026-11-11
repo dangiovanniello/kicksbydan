@@ -17,7 +17,7 @@ The site is a static Vite build (`dist`), so it deploys as is on Vercel or Netli
 ## Where things live
 
 - `index.html`: all page markup.
-- `src/catalog.js`: the 12 listings and contact details. Edit this to change stock.
+- `src/catalog.js`: all listings and contact details. Edit this to change stock.
 - `src/data.js`: which listings have a 360° sequence.
 - `src/intro.js`: the logo intro. It plays the liquid glass reveal in `src/glass-reveal.js` on `public/logo/mark.webp` (the logo on a transparent background), then flies the logo into the header.
 - `src/stage.js`: the pinned 360° stage (canvas turntable, scroll and drag to turn).

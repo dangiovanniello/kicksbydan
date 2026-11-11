@@ -1,4 +1,29 @@
+// Sorted by price, highest first. `box` is optional and only set where the listing states it.
 export const inventory = [
+  {
+    "name": "Bape Sk8 Sta 'Panda' Patent",
+    "brand": "other",
+    "size": "11",
+    "price": "$700.00",
+    "used": "Brand New",
+    "box": "With Box",
+    "img": "/assets/bape-sk8-sta-panda.jpg",
+    "id": 14,
+    "rawPrice": 700,
+    "replica": false
+  },
+  {
+    "name": "Off-White x Nike Dunk Low 'Lot 26 of 50'",
+    "brand": "other",
+    "size": "12",
+    "price": "$500.00",
+    "used": "Lightly Used",
+    "box": "With Box",
+    "img": "/assets/offwhite-dunk-lot26.jpg",
+    "id": 16,
+    "rawPrice": 500,
+    "replica": false
+  },
   {
     "name": "Kobe 6 Protro 'All Star'",
     "brand": "kobe",
@@ -30,6 +55,18 @@ export const inventory = [
     "img": "/assets/shoe_2213.jpg",
     "id": 3,
     "rawPrice": 340,
+    "replica": false
+  },
+  {
+    "name": "Jordan 4 UNC",
+    "brand": "jordan",
+    "size": "11.5",
+    "price": "$300.00",
+    "used": "Lightly Used",
+    "box": "No Box",
+    "img": "/assets/jordan4-unc.jpg",
+    "id": 13,
+    "rawPrice": 300,
     "replica": false
   },
   {
@@ -73,6 +110,18 @@ export const inventory = [
     "used": "Worn Once",
     "img": "/assets/shoe_2203.jpg",
     "id": 7,
+    "rawPrice": 230,
+    "replica": false
+  },
+  {
+    "name": "Jordan 1 Lost and Found",
+    "brand": "jordan",
+    "size": "12",
+    "price": "$230.00",
+    "used": "Lightly Used",
+    "box": "No Box",
+    "img": "/assets/jordan1-lost-and-found.jpg",
+    "id": 15,
     "rawPrice": 230,
     "replica": false
   },
@@ -132,4 +181,4 @@ export const inventory = [
     "replica": false
   }
 ];
-export const contact={instagram:"https://instagram.com/kicks.bydan",email:"dangiovanniello1@gmail.com",founder:"Daniel Giovanniello"};
+export const contact={instagram:"https://www.instagram.com/kicks.bydan/",email:"dangiovanniello1@gmail.com",founder:"Daniel Giovanniello"};

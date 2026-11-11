@@ -169,7 +169,7 @@ svg { width: 1em; height: 1em; flex: none; }
 .hero-foot p { max-width: 34em; color: var(--dim); font-size: clamp(15px, 1.25vw, 18px); }
 
 /* Rotation stage */
-.rotation { --per: 85vh; position: relative; height: calc(100svh + var(--n, 10) * var(--per)); }
+.rotation { --per: 75vh; position: relative; height: calc(100svh + var(--n, 10) * var(--per)); }
 .stage {
   --e: 1;
   --in: 1;
@@ -510,7 +510,7 @@ dialog[open]::backdrop { background: rgb(0 0 0 / .72); backdrop-filter: blur(10p
   .hero { padding-top: 96px; }
   .hero-title .row { display: block; width: auto; }
   .hero-foot { flex-direction: column; align-items: flex-start; }
-  .rotation { --per: 70vh; }
+  .rotation { --per: 62vh; }
   .stage-count { top: 74px; }
   .stage-info { width: auto; right: var(--pad); bottom: 74px; }
   .st-meta { font-size: 14px; margin-bottom: 8px; }

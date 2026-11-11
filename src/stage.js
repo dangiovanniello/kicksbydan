@@ -1,6 +1,6 @@
 // The pinned 360° stage. Each featured pair is a 36-frame photographic turntable;
 // scrolling turns the current pair once and then hands over to the next.
-import { shoes, FRAME_COUNT, brandLabel, shortPrice } from './data.js';
+import { shoes, FRAME_COUNT, metaLine, shortPrice } from './data.js';
 import { reducedMotion, scrollToY } from './scroll.js';
 
 const clamp01 = v => Math.min(1, Math.max(0, v));
@@ -89,7 +89,7 @@ export function initStage({ onView }) {
   function showInfo(index) {
     const s = shoes[index];
     text.index.textContent = pad2(index + 1);
-    text.meta.innerHTML = `${brandLabel[s.brand]} · Size ${s.size} · ${s.used}${s.replica ? ' · <b>1:1 replica</b>' : ''}`;
+    text.meta.innerHTML = metaLine(s) + (s.replica ? ' · <b>1:1 replica</b>' : '');
     text.name.textContent = s.name.replace(' (1:1 Reps)', '');
     text.price.textContent = shortPrice(s);
     ticks.forEach((t, i) => t.setAttribute('aria-current', String(i === index)));

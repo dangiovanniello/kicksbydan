@@ -1,6 +1,6 @@
 // Pairs grid, product dialog and the sell / trade form.
 import { inventory, contact } from './catalog.js';
-import { brandLabel, shortPrice } from './data.js';
+import { brandLabel, metaLine, shortPrice } from './data.js';
 import { reducedMotion } from './scroll.js';
 
 const arrow = '<svg><use href="#arrow"/></svg>';
@@ -28,7 +28,7 @@ export function initCatalog({ observeReveal }) {
           <span class="card-go">${arrow}</span>
         </span>
         <span class="card-row"><span>${cleanName(p)}</span><span class="card-price">${shortPrice(p)}</span></span>
-        <span class="card-sub">Size ${p.size} · ${p.used}</span>
+        <span class="card-sub">${[`Size ${p.size}`, p.used, p.box].filter(Boolean).join(' · ')}</span>
       </button>`).join('') || '<p class="empty">Nothing in that brand right now.</p>';
     if (firstRender) grid.querySelectorAll('.card').forEach(observeReveal);
     firstRender = false;
@@ -50,11 +50,11 @@ export function initCatalog({ observeReveal }) {
   function openProduct(id) {
     const p = inventory.find(item => item.id === id);
     const subject = encodeURIComponent(`${p.name}, size ${p.size}`);
-    const body = encodeURIComponent(`Hi Dan,\n\nI'm interested in the ${p.name}, size ${p.size}, listed at ${p.price} (${p.used}).${p.replica ? ' I understand this pair is a 1:1 replica.' : ''}\n\nIs it still available?`);
+    const body = encodeURIComponent(`Hi Dan,\n\nI'm interested in the ${p.name}, size ${p.size}, listed at ${p.price} (${[p.used, p.box].filter(Boolean).join(', ')}).${p.replica ? ' I understand this pair is a 1:1 replica.' : ''}\n\nIs it still available?`);
     q('#product-details').innerHTML = `
       <img class="pd-photo" src="${p.img}" alt="Dan’s pair: ${cleanName(p)}" width="800" height="800">
       <div class="pd-body">
-        <p class="pd-meta">${brandLabel[p.brand]} · Size ${p.size} · ${p.used}</p>
+        <p class="pd-meta">${metaLine(p)}</p>
         <h2 class="pd-name" id="pd-name">${cleanName(p)}</h2>
         <p class="pd-price">${shortPrice(p)}</p>
         ${p.replica ? '<p class="pd-flag">This pair is a 1:1 replica, not an authentic Nike product.</p>' : ''}

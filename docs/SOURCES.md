@@ -17,3 +17,9 @@ The source filename for the Kobe 6 Dodgers sequence says `Nike-Kobe-8-Protro-Dod
 Ten sequences are available, each containing 36 distinct reference angles. No matching rotation was found for the custom Nike By You Sabrina 1 or the Kobe 4 Milwaukee Bucks pair. Both remain in the full catalog with Dan's actual photographs; no replacement colorway or generic shoe is substituted.
 
 No Sketchfab models, GOAT assets, or generated shoe geometry are used in the finished experience. Spins use actual angle sequences rather than rotating a flat image or claiming these are downloadable 3D scans. No endorsement or affiliation with StockX is claimed.
+
+## Pairs added from Instagram (November 2026)
+
+Four listings were added from @kicks.bydan posts: Jordan 4 UNC, Bape Sk8 Sta Panda Patent, Jordan 1 Lost and Found and Off-White x Nike Dunk Low 'Lot 26 of 50'. Names, sizes, prices, condition and box status are taken from the post captions. Dan's photos (`public/assets/jordan4-unc.jpg`, `bape-sk8-sta-panda.jpg`, `jordan1-lost-and-found.jpg`, `offwhite-dunk-lot26.jpg`) were cropped from screenshots of those posts, so they are lower resolution than the originals; replace them with the original files when convenient.
+
+Their 360° sequences (`public/rotations/13` to `16`) are StockX reference sets for the matching model and colourway, listed in `public/rotations/sources.json`. The StockX page slugs recorded there for these four are inferred from the image set names, not read from the product pages.
