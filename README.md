@@ -1,6 +1,6 @@
 # Kicks by Dan
 
-Sneaker storefront for Kicks by Dan. Black, white and the logo blue, with a drawn-on logo intro, a scroll-driven 360° stage for the featured pairs, and the full list of pairs underneath.
+Sneaker storefront for Kicks by Dan. Black, white and the logo blue, with a liquid glass logo intro, a scroll-driven 360° stage for the featured pairs, and the full list of pairs underneath.
 
 ## Run and deploy
 
@@ -19,7 +19,7 @@ The site is a static Vite build (`dist`), so it deploys as is on Vercel or Netli
 - `index.html`: all page markup.
 - `src/catalog.js`: the 12 listings and contact details. Edit this to change stock.
 - `src/data.js`: which listings have a 360° sequence.
-- `src/intro.js`: the logo intro. The logo is split into layers in `public/logo`.
+- `src/intro.js`: the logo intro. It plays the liquid glass reveal in `src/glass-reveal.js` on `public/logo/mark.webp` (the logo on a transparent background), then flies the logo into the header.
 - `src/stage.js`: the pinned 360° stage (canvas turntable, scroll and drag to turn).
 - `src/catalog-ui.js`: pairs grid, product dialog, sell / trade form.
 - `src/motion.js`, `src/scroll.js`: smooth scrolling, reveals, header, marquee.

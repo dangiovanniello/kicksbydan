@@ -106,18 +106,10 @@ svg { width: 1em; height: 1em; flex: none; }
   background: var(--black);
   cursor: pointer;
 }
-.intro-logo { position: relative; width: min(60vmin, 460px); aspect-ratio: 1; will-change: transform; }
-.intro-logo img { position: absolute; inset: 0; width: 100%; height: 100%; }
-.l-ring, .l-arc {
-  -webkit-mask-image: conic-gradient(from 200deg, #000 calc(var(--a, 0) * 1turn - var(--soft, 3%)), transparent calc(var(--a, 0) * 1turn));
-  mask-image: conic-gradient(from 200deg, #000 calc(var(--a, 0) * 1turn - var(--soft, 3%)), transparent calc(var(--a, 0) * 1turn));
-}
-.l-arc { --soft: 9%; }
-.l-kicks, .l-dan, .l-line {
-  -webkit-mask-image: linear-gradient(98deg, #000 calc(var(--w, 0) * 1% - 9%), transparent calc(var(--w, 0) * 1%));
-  mask-image: linear-gradient(98deg, #000 calc(var(--w, 0) * 1% - 9%), transparent calc(var(--w, 0) * 1%));
-}
-.l-by { opacity: var(--o, 0); transform: translateY(calc((1 - var(--o, 0)) * 6%)); }
+.intro-logo { position: absolute; inset: 0; display: grid; place-items: center; will-change: transform; }
+/* The image stands in for the canvas once the glass has let go, and when the reveal cannot run. */
+.intro-logo img { width: min(46vmin, 340px); height: auto; visibility: hidden; }
+.intro.plain .intro-logo img { visibility: visible; }
 .intro.done { display: none; }
 
 /* Header */
