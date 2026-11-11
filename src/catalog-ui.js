@@ -1,12 +1,103 @@
-import{inventory,contact}from'./catalog.js';
-const arrow='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 19 19 5M5 5h14v14"/></svg>';
-export function catalogHTML(){return `<section id="vault" class="vault"><div class="vault-heading"><div><p class="eyebrow">THE COMPLETE ROTATION</p><h2>THE VAULT.<span id="stock-count">12 PAIRS</span></h2></div><p>Quality kicks. Fair prices. Trusted source.<br>Sizes, conditions, and prices from Dan’s store.</p></div><div class="catalog-controls"><input id="search" type="search" aria-label="Search sneakers" placeholder="Search a shoe, brand, or size…"><div class="catalog-filters" role="group" aria-label="Filter inventory">${[['all','All pairs'],['kobe','Kobe'],['jordan','Jordan'],['yeezy','Yeezy'],['other','Nike / Puma']].map(([v,l])=>`<button data-brand="${v}" aria-pressed="${v==='all'}">${l}</button>`).join('')}</div><select id="sort" aria-label="Sort inventory"><option value="featured">Featured</option><option value="price-asc">Price: low to high</option><option value="price-desc">Price: high to low</option><option value="name">Name: A–Z</option></select></div><div id="inventory-grid"></div><p class="catalog-disclosure">Availability is confirmed directly with Dan. The Kobe 6 Grinch listing is explicitly marked as 1:1 replicas; it is not represented as authentic.</p></section><section class="trade-section" id="trade"><div><p class="eyebrow">BUY / SELL / TRADE</p><h2>MAKE YOUR<br><em>NEXT MOVE.</em></h2><p>Reserve a pair, make an offer, or tell Dan what you’re looking to sell or trade.</p><a href="${contact.instagram}" target="_blank" rel="noopener">@kicks.bydan ${arrow}</a><a href="mailto:${contact.email}">${contact.email} ${arrow}</a></div><form name="trade-inquiry" id="trade-form" method="POST" data-netlify="true" netlify-honeypot="bot-field"><input type="hidden" name="form-name" value="trade-inquiry"><label class="honeypot">Leave empty<input name="bot-field" tabindex="-1" autocomplete="off"></label><div class="form-grid"><label>Your name<input name="name" autocomplete="name" required maxlength="100"></label><label>Instagram or email<input name="contact" required maxlength="200"></label><label>I want to<select name="action_type"><option>Buy/Reserve</option><option>Sell</option><option>Trade</option><option>General Inquiry</option></select></label><label>Sneaker model<input name="shoe_model" required maxlength="200"></label><label>Size<input name="shoe_size" maxlength="30"></label><label>Offer / asking price<input name="price_or_asking" maxlength="100"></label></div><label>Condition, box, and other details<textarea name="message" rows="4" maxlength="3000"></textarea></label><button class="button" type="submit">Submit inquiry ${arrow}</button><p id="form-status" role="status"></p><small>Submit an inquiry, then confirm availability, payment, and delivery directly with Dan. Submitting does not take payment or reserve stock.</small></form></section><section id="about" class="about-section"><p class="eyebrow">THE PERSON BEHIND THE PAIRS</p><h2>DANIEL<br><em>GIOVANNIELLO.</em></h2><p>Founder & CEO · Established 2024</p><p>Kicksbydan brings together hand-picked sneakers, clear condition descriptions, and direct communication. Talk with Dan about the pair, the price, and the details before you buy.</p><div class="about-values"><span>HAND-PICKED STOCK</span><span>CLEAR CONDITIONS</span><span>DIRECT CONVERSATIONS</span></div></section><dialog id="product-dialog"><button class="dialog-close" aria-label="Close product details">×</button><div id="product-details"></div></dialog>`}
-export function initCatalog(){const q=s=>document.querySelector(s);let brand='all';
- function render(){let list=inventory.filter(p=>(brand==='all'||p.brand===brand)&&[p.name,p.brand,p.size,p.used].join(' ').toLowerCase().includes(q('#search').value.trim().toLowerCase()));const sort=q('#sort').value;if(sort==='price-asc')list.sort((a,b)=>a.rawPrice-b.rawPrice);if(sort==='price-desc')list.sort((a,b)=>b.rawPrice-a.rawPrice);if(sort==='name')list.sort((a,b)=>a.name.localeCompare(b.name));q('#stock-count').textContent=list.length+' PAIRS';q('#inventory-grid').innerHTML=list.length?list.map(p=>`<article class="inventory-card"><button class="product-image" data-product="${p.id}" aria-label="View ${p.name}"><img src="${p.img}" alt="Dan’s actual pair: ${p.name}" loading="lazy"><span class="condition ${p.replica?'replica':''}">${p.replica?'1:1 REPLICAS · ':''}${p.used}</span><span class="image-arrow">${arrow}</span></button><div class="inventory-content"><p>${p.brand.toUpperCase()} / SIZE ${p.size}</p><h3>${p.name}</h3><div><strong>${p.price}</strong><button data-product="${p.id}">Inquire ${arrow}</button></div></div></article>`).join(''):'<p class="empty-results">No matching pairs. Try another name, size, or brand.</p>';q('#inventory-grid').querySelectorAll('[data-product]').forEach(b=>b.onclick=()=>openProduct(+b.dataset.product))}
- q('#search').oninput=render;q('#sort').onchange=render;document.querySelectorAll('[data-brand]').forEach(b=>b.onclick=()=>{brand=b.dataset.brand;document.querySelectorAll('[data-brand]').forEach(el=>el.setAttribute('aria-pressed',el===b));render()});
- document.querySelectorAll('[data-inquire]').forEach(b=>b.onclick=()=>openProduct(+b.dataset.inquire));
- const dialog=q('#product-dialog');q('.dialog-close').onclick=()=>dialog.close();dialog.addEventListener('click',e=>{if(e.target===dialog){const r=dialog.getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)dialog.close()}});
- function openProduct(id){const p=inventory.find(p=>p.id===id);const subject=encodeURIComponent(`Inquiry: ${p.name} - ${p.size}`);const body=encodeURIComponent(`Hi Daniel,\n\nI’m interested in ${p.name}, size ${p.size}, listed at ${p.price}. Condition: ${p.used}.${p.replica?' I understand this listing is 1:1 replicas.':''}\n\nPlease confirm availability and payment/delivery options.`);q('#product-details').innerHTML=`<img class="detail-photo" src="${p.img}" alt="Dan’s actual pair: ${p.name}"><p class="eyebrow">${p.brand.toUpperCase()} / SIZE ${p.size}</p><h2>${p.name}</h2><div class="detail-meta"><strong>${p.price}</strong><span>${p.used}</span></div>${p.replica?'<p class="replica-note">1:1 REPLICAS. This pair is not represented as an authentic Nike product.</p>':''}<p>Ask Dan to confirm availability, condition details, and payment/delivery options before purchasing.</p><a class="button" href="${contact.instagram}" target="_blank" rel="noopener">DM @kicks.bydan ${arrow}</a><a class="detail-email" href="mailto:${contact.email}?subject=${subject}&body=${body}">Email about this pair ${arrow}</a>`;dialog.showModal()}
- q('#trade-form').onsubmit=async e=>{e.preventDefault();const form=e.currentTarget,status=q('#form-status'),button=form.querySelector('button[type=submit]');if(['localhost','127.0.0.1'].includes(location.hostname)){status.textContent='Local preview: no inquiry was sent. Use Instagram or email, or submit after the Netlify deployment is connected.';return}button.disabled=true;status.textContent='Sending…';try{const response=await fetch('/',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:new URLSearchParams(new FormData(form)).toString()});if(!response.ok)throw new Error('Submission failed');status.textContent='Inquiry submitted. Dan will respond using the contact details you provided.';form.reset()}catch{status.textContent='Your inquiry could not be sent. Your details are still here. Please retry or contact Dan on Instagram or email.'}finally{button.disabled=false}};
- render();return{openProduct}
+// Pairs grid, product dialog and the sell / trade form.
+import { inventory, contact } from './catalog.js';
+import { brandLabel, shortPrice } from './data.js';
+import { reducedMotion } from './scroll.js';
+
+const arrow = '<svg><use href="#arrow"/></svg>';
+const q = s => document.querySelector(s);
+const cleanName = p => p.name.replace(' (1:1 Reps)', '');
+
+export function initCatalog({ observeReveal }) {
+  const grid = q('#grid');
+  const dialog = q('#product-dialog');
+  let brand = 'all';
+  let firstRender = true;
+
+  const tabs = [['all', 'All'], ...Object.entries(brandLabel)];
+  q('#tabs').innerHTML = tabs.map(([value, label]) => `<button type="button" data-brand="${value}" aria-pressed="${value === brand}">${label}</button>`).join('');
+  q('#hero-count').textContent = inventory.length;
+
+  function render() {
+    const list = inventory.filter(p => brand === 'all' || p.brand === brand);
+    q('#pair-count').textContent = list.length;
+    grid.innerHTML = list.map((p, i) => `
+      <button class="card${firstRender ? '' : ' in'}" type="button" data-product="${p.id}" style="--i:${i % 4};view-transition-name:pair-${p.id}">
+        <span class="card-img">
+          <img src="${p.img}" alt="${cleanName(p)}" loading="lazy" width="800" height="800">
+          ${p.replica ? '<span class="card-flag">1:1 replica</span>' : ''}
+          <span class="card-go">${arrow}</span>
+        </span>
+        <span class="card-row"><span>${cleanName(p)}</span><span class="card-price">${shortPrice(p)}</span></span>
+        <span class="card-sub">Size ${p.size} · ${p.used}</span>
+      </button>`).join('') || '<p class="empty">Nothing in that brand right now.</p>';
+    if (firstRender) grid.querySelectorAll('.card').forEach(observeReveal);
+    firstRender = false;
+  }
+
+  q('#tabs').addEventListener('click', e => {
+    const button = e.target.closest('[data-brand]');
+    if (!button || button.dataset.brand === brand) return;
+    brand = button.dataset.brand;
+    q('#tabs').querySelectorAll('button').forEach(b => b.setAttribute('aria-pressed', String(b === button)));
+    if (document.startViewTransition && !reducedMotion.matches) document.startViewTransition(render);
+    else render();
+  });
+  grid.addEventListener('click', e => {
+    const card = e.target.closest('[data-product]');
+    if (card) openProduct(Number(card.dataset.product));
+  });
+
+  function openProduct(id) {
+    const p = inventory.find(item => item.id === id);
+    const subject = encodeURIComponent(`${p.name}, size ${p.size}`);
+    const body = encodeURIComponent(`Hi Dan,\n\nI'm interested in the ${p.name}, size ${p.size}, listed at ${p.price} (${p.used}).${p.replica ? ' I understand this pair is a 1:1 replica.' : ''}\n\nIs it still available?`);
+    q('#product-details').innerHTML = `
+      <img class="pd-photo" src="${p.img}" alt="Dan’s pair: ${cleanName(p)}" width="800" height="800">
+      <div class="pd-body">
+        <p class="pd-meta">${brandLabel[p.brand]} · Size ${p.size} · ${p.used}</p>
+        <h2 class="pd-name" id="pd-name">${cleanName(p)}</h2>
+        <p class="pd-price">${shortPrice(p)}</p>
+        ${p.replica ? '<p class="pd-flag">This pair is a 1:1 replica, not an authentic Nike product.</p>' : ''}
+        <p class="pd-note">This is Dan’s photo of the actual pair. Message him to check it’s still available and sort out payment and delivery.</p>
+        <div class="pd-actions">
+          <a class="btn btn-light" href="${contact.instagram}" target="_blank" rel="noopener">DM on Instagram ${arrow}</a>
+          <a class="btn btn-line" href="mailto:${contact.email}?subject=${subject}&body=${body}">Email Dan</a>
+        </div>
+      </div>`;
+    dialog.showModal();
+  }
+  q('.dialog-close').addEventListener('click', () => dialog.close());
+  dialog.addEventListener('click', e => { if (e.target === dialog) dialog.close(); });
+
+  // Netlify Forms handles the POST when hosted there. Anywhere else the POST fails,
+  // so the same details open as a ready-to-send email instead of being lost.
+  const form = q('#trade-form');
+  form.addEventListener('submit', async e => {
+    e.preventDefault();
+    const status = q('#form-status');
+    const button = form.querySelector('button[type=submit]');
+    const data = new FormData(form);
+    button.disabled = true;
+    status.textContent = 'Sending…';
+    try {
+      if (['localhost', '127.0.0.1'].includes(location.hostname)) throw new Error('local preview');
+      const response = await fetch('/', { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: new URLSearchParams(data).toString() });
+      if (!response.ok) throw new Error('not accepted');
+      status.textContent = 'Sent. Dan will get back to you.';
+      form.reset();
+    } catch {
+      const lines = [
+        `Name: ${data.get('name')}`, `Contact: ${data.get('contact')}`, `I want to: ${data.get('action_type')}`,
+        `Model: ${data.get('shoe_model')}`, `Size: ${data.get('shoe_size') || '-'}`, `Price: ${data.get('price_or_asking') || '-'}`,
+        '', data.get('message') || ''
+      ];
+      location.href = `mailto:${contact.email}?subject=${encodeURIComponent(`${data.get('action_type')}: ${data.get('shoe_model')}`)}&body=${encodeURIComponent(lines.join('\n'))}`;
+      status.textContent = 'Your email app should open with everything filled in. Just hit send.';
+    } finally {
+      button.disabled = false;
+    }
+  });
+
+  render();
+  return { openProduct };
 }

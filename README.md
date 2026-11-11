@@ -1,6 +1,6 @@
-# Kicks by Dan — The rotation
+# Kicks by Dan
 
-A motion storefront rebuilt from the live Kicks by Dan site. The exact original logo opens in a short cinematic reveal. Scrolling rotates matching shoe/colorway turntables through real source angles, transitions to the next shoe, and shows Dan's actual pair photograph underneath.
+Sneaker storefront for Kicks by Dan. Black, white and the logo blue, with a drawn-on logo intro, a scroll-driven 360° stage for the featured pairs, and the full list of pairs underneath.
 
 ## Run and deploy
 
@@ -10,22 +10,23 @@ npm run dev -- --port 5174
 npm run build
 ```
 
-With the development server running, `npx playwright test` runs browser checks using `/usr/bin/chromium`. No WebGL or third-party runtime services are needed. Fonts and all photography are bundled locally.
+`npx playwright test` runs the browser checks (it starts the dev server itself). Set `CHROMIUM_PATH` to use a system Chromium.
 
-For Netlify, connect this repository, build with `npm run build`, and publish `dist`. `netlify.toml` sets these values. An inquiry form named `trade-inquiry` is statically declared in `index.html` for Netlify Forms detection. Confirm form detection is enabled in Netlify after deployment. The client checks HTTP success and retains the entered details on failure. Local previews do not send inquiries. Instagram and product-specific mailto links preserve the original direct ordering flow. No payments or stock reservations are taken on site.
+The site is a static Vite build (`dist`), so it deploys as is on Vercel or Netlify. The sell / trade form posts to Netlify Forms when hosted on Netlify; on any other host it opens a pre-filled email to Dan instead. No payments are taken on site.
 
-## Content and motion
+## Where things live
 
-- `src/catalog.js`: all 12 original listings and contact information.
-- `src/data.js`: the 10 featured rotations and matching inventory IDs.
-- `public/assets`: Dan's actual original photographs and logo.
-- `public/rotations`: 36 JPEG reference angles per matching product.
-- `src/scene.js`: canvas turntable rendering, scroll-synchronized frame selection and transitions, manual rotation, lazy loading, and bounded image caching.
-- `src/catalog-ui.js`: searchable/filterable/sortable stock, accessible dialogs, product inquiries, and buy/sell/trade form.
-- `docs/SOURCES.md`: image provenance and limitations.
+- `index.html`: all page markup.
+- `src/catalog.js`: the 12 listings and contact details. Edit this to change stock.
+- `src/data.js`: which listings have a 360° sequence.
+- `src/intro.js`: the logo intro. The logo is split into layers in `public/logo`.
+- `src/stage.js`: the pinned 360° stage (canvas turntable, scroll and drag to turn).
+- `src/catalog-ui.js`: pairs grid, product dialog, sell / trade form.
+- `src/motion.js`, `src/scroll.js`: smooth scrolling, reveals, header, marquee.
+- `src/style.css`: all styles. Colours are the variables at the top.
+- `public/assets`: Dan's own photos and the original logo.
+- `public/rotations`: 36 reference angles per featured model. See `docs/SOURCES.md`.
 
-Reduced motion skips the opening reveal and uses a stable source angle while retaining navigation, product photos, and inquiries. The full inventory can be reached immediately through the header so visitors need not scroll through every feature.
+With reduced motion turned on in the OS, the intro and scroll effects are skipped and everything is simply shown.
 
-The custom Sabrina 1 and Kobe 4 Milwaukee Bucks retain their actual photos in the catalog, but no unverified rotation is substituted. The Grinch is clearly labeled **1:1 replicas**, including when reference photography depicts the authentic colorway. Source inventory may change; confirm availability directly with Dan.
-
-Publishing code to GitHub does not update the existing Netlify deployment unless that Netlify project is connected to this repository/branch. Live form delivery and the Netlify deployment must be checked after hosting is connected.
+The Kobe 6 Grinch listing is a 1:1 replica and is labelled as such on the stage, its card and its dialog.
